@@ -15,3 +15,7 @@ export const loggedInUser = (state: RootState): AuthResponseProfile => {
 export const isLoadingAuth = (state: RootState): boolean => {
   return state.auth.isLoading ?? false;
 };
+
+export const isLoginPage = (state: RootState): boolean => {
+  return state.auth.loginPage ?? true;
+};

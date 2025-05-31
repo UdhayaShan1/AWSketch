@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import Header from "./components/Header";
-import AuthRouter from "./components/AuthRouter";
+import AuthRouter from "./components/auth/AuthRouter";
 import { Content, Footer } from "antd/es/layout/layout";
 import Home from "./components/Home";
 import Projects from "./components/Projects";

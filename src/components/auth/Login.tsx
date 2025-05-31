@@ -1,18 +1,16 @@
-import { useState } from "react";
-import type { AuthRequest } from "../store/types/auth.types";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import type { AuthRequest } from "../../store/types/auth.types";
+import { Form, Input, Button, Typography } from "antd";
+import { useAppDispatch } from "../../store/rootTypes";
+import { authAction } from "../../store/auth/authSlice";
 
 const { Title } = Typography;
 
 export default function Login() {
-  const [form, setForm] = useState<AuthRequest>({
-    email: "",
-    password: "",
-  });
-
-  const onFinish = (values: any) => {
+  const dispatch = useAppDispatch();
+  
+  const onFinish = (values: AuthRequest) => {
     console.log("Login values:", values);
-    // handle login logic here (e.g., call API)
+    dispatch(authAction.loginUser(values));
   };
 
   return (
@@ -52,6 +50,16 @@ export default function Login() {
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
             Log In
+          </Button>
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            style={{ backgroundColor: "red", color: "white" }}
+            onClick={() => dispatch(authAction.setLoginPage(false))}
+            block
+          >
+            Register
           </Button>
         </Form.Item>
       </Form>

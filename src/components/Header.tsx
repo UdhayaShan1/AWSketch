@@ -1,9 +1,14 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 
 const { Header: AntHeader } = Layout;
 import { Link, useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/rootTypes";
+import { isloggedInUser } from "../store/auth/authSelector";
+import { authAction } from "../store/auth/authSlice";
 
 export default function Header() {
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(isloggedInUser);
   const location = useLocation();
   return (
     <>
@@ -40,6 +45,8 @@ export default function Header() {
               },
             ]}
           ></Menu>
+
+          {isLoggedIn && <Button onClick={() => dispatch(authAction.logoutUser())}>Logout</Button>}
         </div>
       </AntHeader>
     </>

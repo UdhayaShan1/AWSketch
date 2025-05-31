@@ -9,13 +9,14 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { auth } from "../../firebase/firebase";
 import { authAction } from "./authSlice";
 import { getUserProfile } from "../../firebase/services/userService";
-import { notification } from "antd";
+import { displayErrorNotification } from "../../helpers/helpers";
 
 export function* loginUserWorker(
   action: PayloadAction<AuthRequest>
 ): Generator<any, void, any> {
   try {
     const { email, password } = action.payload;
+    console.log("In Saga", email, password);
     const firebaseCred: UserCredential = yield call(
       signInWithEmailAndPassword,
       auth,
@@ -42,7 +43,7 @@ export function* loginUserWorker(
     );
   } catch (error) {
     const errMsg = error instanceof Error ? error.message : "Error logging in!";
-    notification["error"]({ message: errMsg });
+    displayErrorNotification(errMsg);
     yield put(authAction.loginUserFail(errMsg));
   }
 }
@@ -80,11 +81,12 @@ export function* registerUserWorker(
   } catch (error) {
     const errMsg =
       error instanceof Error ? error.message : "Error registering user";
-    notification["error"]({ message: errMsg });
+    displayErrorNotification(errMsg);
     yield put(authAction.registerUserFail(errMsg));
   }
 }
 
 export function* authWatcher() {
   yield takeEvery(authAction.loginUser, loginUserWorker);
+  yield takeEvery(authAction.registerUser, registerUserWorker);
 }

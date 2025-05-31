@@ -10,12 +10,16 @@ const initialState: AWSUser = {
   userProfile: null,
   isLoading: false,
   error: "",
+  loginPage: true,
 };
 
 export const authSlice = createSlice({
   name: "slice",
   initialState,
   reducers: {
+    setLoginPage(state, action: PayloadAction<boolean>) {
+      state.loginPage = action.payload;
+    },
     loginUser(state, _actions: PayloadAction<AuthRequest>) {
       Object.assign(state, initialState);
       state.isLoading = true;

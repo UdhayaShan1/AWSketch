@@ -10,7 +10,7 @@ export async function getUserProfile(uid: string, email: string) {
     if (userDoc.exists()) {
       return userDoc.data() as UserProfile;
     }
-    return createDefaultProfile(uid, email);
+    return await createDefaultProfile(uid, email);
   } catch (error) {
     console.log("Error retrieving user profile", error);
     return null;
@@ -33,28 +33,28 @@ export async function saveUserProfile(userProfileToSave: UserProfile) {
   }
 }
 
-function createDefaultProfile(uid: string, email: string) {
-    const defaultProfile: UserProfile = {
-        uid: uid,
-        email: email,
-        name: "John Doe",
-        lastUpdated: getCurrentDateString(),
-        projects: []
-    };
-    try {
-        saveUserProfile(defaultProfile);
-    } catch (error) {
-        console.error("Error creating default profile", error);
-    }
+async function createDefaultProfile(uid: string, email: string) {
+  const defaultProfile: UserProfile = {
+    uid: uid,
+    email: email,
+    name: "John Doe",
+    lastUpdated: getCurrentDateString(),
+    projects: [],
+  };
+  try {
+    saveUserProfile(defaultProfile);
+  } catch (error) {
+    console.error("Error creating default profile", error);
+  }
 }
 
-export async function deleteUserProfile(uid : string) {
-    try {
-        const docRef = doc(db, "UserProfile", uid);
-        await deleteDoc(docRef);
-        return true;
-    } catch (error) {
-        console.log("Error deleting", error);
-        return false;
-    }
+export async function deleteUserProfile(uid: string) {
+  try {
+    const docRef = doc(db, "UserProfile", uid);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.log("Error deleting", error);
+    return false;
+  }
 }
