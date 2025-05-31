@@ -1,7 +1,5 @@
-import { all } from 'redux-saga/effects'
-
+import { all } from "redux-saga/effects";
+import * as authSaga from "./auth/authSaga";
 export function* rootSaga() {
-  yield all([
-
-  ])
+  yield all([authSaga.authWatcher()]);
 }

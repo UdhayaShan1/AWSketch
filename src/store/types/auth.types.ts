@@ -21,6 +21,7 @@ export interface AWSUser {
   userProfile?: UserProfile | null;
   isLoading?: boolean;
   error?: string;
+  loginPage?: boolean;
 }
 
 export interface AuthRequest {

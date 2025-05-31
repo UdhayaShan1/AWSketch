@@ -10,12 +10,17 @@ const initialState: AWSUser = {
   userProfile: null,
   isLoading: false,
   error: "",
+  loginPage: true,
 };
 
 export const authSlice = createSlice({
   name: "slice",
   initialState,
   reducers: {
+    setLoginPage(state, action: PayloadAction<boolean>) {
+      state.loginPage = action.payload;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loginUser(state, _actions: PayloadAction<AuthRequest>) {
       Object.assign(state, initialState);
       state.isLoading = true;
@@ -30,6 +35,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.error = actions.payload;
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     registerUser(state, _actions: PayloadAction<AuthRequest>) {
       Object.assign(state, initialState);
       state.isLoading = true;

@@ -3,14 +3,18 @@ import type { UserProfile } from "../../store/types/auth.types";
 import { db } from "../firebase";
 import { getCurrentDateString } from "../../helpers/date_helper";
 
-export async function getUserProfile(uid: string, email: string) {
+export async function getUserProfile(
+  uid: string,
+  email: string
+): Promise<UserProfile | null> {
   try {
     const userDocRef = doc(db, "UserProfile", uid);
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
       return userDoc.data() as UserProfile;
     }
-    return createDefaultProfile(uid, email);
+    const newProfile = await createDefaultProfile(uid, email);
+    return newProfile;
   } catch (error) {
     console.log("Error retrieving user profile", error);
     return null;
@@ -25,36 +29,39 @@ export async function saveUserProfile(userProfileToSave: UserProfile) {
       email: userProfileToSave.email,
       name: userProfileToSave.name,
       lastUpdated: getCurrentDateString(),
+      projects: userProfileToSave.projects || [],
     });
     return true;
-  } catch (error) {
+  } catch {
     console.error("Error saving profile");
     return false;
   }
 }
 
-function createDefaultProfile(uid: string, email: string) {
-    const defaultProfile: UserProfile = {
-        uid: uid,
-        email: email,
-        name: "John Doe",
-        lastUpdated: getCurrentDateString(),
-        projects: []
-    };
-    try {
-        saveUserProfile(defaultProfile);
-    } catch (error) {
-        console.error("Error creating default profile", error);
-    }
+async function createDefaultProfile(uid: string, email: string) {
+  const defaultProfile: UserProfile = {
+    uid: uid,
+    email: email,
+    name: "John Doe",
+    lastUpdated: getCurrentDateString(),
+    projects: [],
+  };
+  try {
+    await saveUserProfile(defaultProfile);
+    return defaultProfile;
+  } catch (error) {
+    console.error("Error creating default profile", error);
+    return defaultProfile;
+  }
 }
 
-export async function deleteUserProfile(uid : string) {
-    try {
-        const docRef = doc(db, "UserProfile", uid);
-        await deleteDoc(docRef);
-        return true;
-    } catch (error) {
-        console.log("Error deleting", error);
-        return false;
-    }
+export async function deleteUserProfile(uid: string) {
+  try {
+    const docRef = doc(db, "UserProfile", uid);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.log("Error deleting", error);
+    return false;
+  }
 }
