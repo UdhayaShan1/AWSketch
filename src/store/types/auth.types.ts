@@ -23,6 +23,7 @@ export interface AWSUser {
   isLoggedIn?: boolean;
   error?: string;
   loginPage?: boolean;
+  initialAuthCheckLoading?: boolean;
 }
 
 export interface AuthRequest {

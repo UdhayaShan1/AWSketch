@@ -19,3 +19,7 @@ export const isLoadingAuth = (state: RootState): boolean => {
 export const isLoginPage = (state: RootState): boolean => {
   return state.auth.loginPage ?? true;
 };
+
+export const isInitialAuthChecking = (state: RootState): boolean => {
+  return state.auth.initialAuthCheckLoading ?? true; 
+};
