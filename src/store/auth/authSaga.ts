@@ -1,8 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { FirebaseCredProfile, AuthRequest } from "../types/auth.types";
+import type {
+  FirebaseCredProfile,
+  AuthRequest,
+  UserProfile,
+} from "../types/auth.types";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   type UserCredential,
 } from "firebase/auth";
 import { call, put, takeEvery } from "redux-saga/effects";
@@ -17,7 +22,6 @@ export function* loginUserWorker(
 ): Generator<any, void, any> {
   try {
     const { email, password } = action.payload;
-    console.log("In Saga", email, password);
     const firebaseCred: UserCredential = yield call(
       signInWithEmailAndPassword,
       auth,
@@ -30,11 +34,18 @@ export function* loginUserWorker(
       email: firebaseCred.user.email || "",
     };
 
-    const userProfileFromDb = yield call(
+    const userProfileFromDb: UserProfile | null = yield call(
       getUserProfile,
-      firebaseCred.user.uid || "",
+      firebaseCred.user.uid,
       firebaseCred.user.email || ""
     );
+
+    if (!userProfileFromDb) {
+      const errorMsg = "Could not retrieve user profile";
+      displayErrorNotification(errorMsg);
+      yield put(authAction.loginUserFail(errorMsg));
+      return;
+    }
 
     yield put(
       authAction.loginUserSuccess({
@@ -68,11 +79,18 @@ export function* registerUserWorker(
       email: firebaseCred.user.email || "",
     };
 
-    const newUserProfileFromDb = yield call(
+    const newUserProfileFromDb: UserProfile | null = yield call(
       getUserProfile,
-      firebaseCred.user.uid || "",
+      firebaseCred.user.uid,
       firebaseCred.user.email || ""
     );
+
+    if (!newUserProfileFromDb) {
+      const errorMsg = "User registered but could not create new user profile";
+      displayErrorNotification(errorMsg);
+      yield put(authAction.loginUserFail(errorMsg));
+      return;
+    }
 
     yield put(
       authAction.registerUserSuccess({
@@ -88,7 +106,20 @@ export function* registerUserWorker(
   }
 }
 
+export function* logoutWorker() {
+  try {
+    yield call(signOut, auth);
+  } catch (error) {
+    const errMsg =
+      error instanceof Error
+        ? error.message
+        : "Error logging out. Try again later.";
+    displayErrorNotification(errMsg);
+  }
+}
+
 export function* authWatcher() {
   yield takeEvery(authAction.loginUser, loginUserWorker);
   yield takeEvery(authAction.registerUser, registerUserWorker);
+  yield takeEvery(authAction.logoutUser, logoutWorker);
 }
