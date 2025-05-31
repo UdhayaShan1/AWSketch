@@ -2,10 +2,10 @@ import type { RootState } from "../rootTypes";
 import type { AuthResponseProfile } from "../types/auth.types";
 
 export const isloggedInUser = (state: RootState): boolean => {
-  return state.auth.credProfile !== null;
+  return state.auth.isLoggedIn ?? false;
 };
 
-export const loggedInUser = (state: RootState): AuthResponseProfile => {
+export const retrieveloggedInUser = (state: RootState): AuthResponseProfile => {
   return {
     credProfile: state.auth.credProfile,
     userProfile: state.auth.userProfile,

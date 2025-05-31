@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <>
       <AntHeader>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
           <div
             className="logo"
             style={{
@@ -44,9 +44,17 @@ export default function Header() {
                 label: <Link to="/projects">Projects</Link>,
               },
             ]}
+            style={{ flexGrow: 1 }} 
           ></Menu>
 
-          {isLoggedIn && <Button onClick={() => dispatch(authAction.logoutUser())}>Logout</Button>}
+          {isLoggedIn && (
+            <Button
+              onClick={() => dispatch(authAction.logoutUser())}
+              style={{ marginLeft: "auto" }} 
+            >
+              Logout
+            </Button>
+          )}
         </div>
       </AntHeader>
     </>
