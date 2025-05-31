@@ -20,6 +20,7 @@ export interface AWSUser {
   credProfile?: FirebaseCredProfile | null;
   userProfile?: UserProfile | null;
   isLoading?: boolean;
+  isLoggedIn?: boolean;
   error?: string;
   loginPage?: boolean;
 }
