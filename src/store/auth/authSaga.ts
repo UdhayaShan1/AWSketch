@@ -13,6 +13,7 @@ import { displayErrorNotification } from "../../helpers/helpers";
 
 export function* loginUserWorker(
   action: PayloadAction<AuthRequest>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Generator<any, void, any> {
   try {
     const { email, password } = action.payload;
@@ -50,6 +51,7 @@ export function* loginUserWorker(
 
 export function* registerUserWorker(
   action: PayloadAction<AuthRequest>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Generator<any, void, any> {
   try {
     const { email, password } = action.payload;

@@ -27,7 +27,7 @@ export async function saveUserProfile(userProfileToSave: UserProfile) {
       lastUpdated: getCurrentDateString(),
     });
     return true;
-  } catch (error) {
+  } catch {
     console.error("Error saving profile");
     return false;
   }
