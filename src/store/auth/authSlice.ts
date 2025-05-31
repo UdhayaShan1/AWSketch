@@ -25,9 +25,6 @@ export const authSlice = createSlice({
     setLoginPage(state, action: PayloadAction<boolean>) {
       state.loginPage = action.payload;
     },
-    setInitialAuthCheckLoading(state, action: PayloadAction<boolean>) {
-      state.initialAuthCheckLoading = action.payload;
-    },
     loginUser(state, _actions: PayloadAction<AuthRequest>) {
       state.isLoading = true;
       state.error = "";
@@ -70,6 +67,29 @@ export const authSlice = createSlice({
     },
     logoutUser(state) {
       Object.assign(state, initialState);
+    },
+    restoreSession(state, actions: PayloadAction<AuthResponseProfile>) {
+      state.isLoading = true;
+      state.error = "";
+      state.isLoggedIn = false;
+      state.credProfile = actions.payload.credProfile;
+      state.userProfile = null;
+    },
+    restoreSessionSuccess(state, actions: PayloadAction<AuthResponseProfile>) {
+      state.isLoading = false;
+      state.credProfile = actions.payload.credProfile;
+      state.userProfile = actions.payload.userProfile;
+      state.isLoggedIn = true;
+    },
+    restoreSessionFailure(state, actions: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = actions.payload;
+      state.isLoggedIn = false;
+      state.credProfile = null;
+      state.userProfile = null;
+    },
+    setInitialAuthCheckLoading(state, action: PayloadAction<boolean>) {
+      state.initialAuthCheckLoading = action.payload;
     },
   },
 });

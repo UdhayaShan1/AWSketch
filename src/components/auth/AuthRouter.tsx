@@ -11,19 +11,34 @@ import { Spin } from "antd";
 import Register from "./Register";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { authAction } from "../../store/auth/authSlice";
+import type { FirebaseCredProfile } from "../../store/types/auth.types";
 
 export default function AuthRouter({ children }: { children: ReactNode }) {
   const isLoggedIn = useAppSelector(isloggedInUser);
   const isLoading: boolean = useAppSelector(isLoadingAuth);
   const loginPage: boolean = useAppSelector(isLoginPage);
-  const initialAuthCheckLoading = useAppSelector(isInitialAuthChecking); 
+  const initialAuthCheckLoading = useAppSelector(isInitialAuthChecking);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      dispatch(authAction.setLoggedInState(firebaseUser !== null));
-      dispatch(authAction.setInitialAuthCheckLoading(false)); 
+      if (firebaseUser) {
+        const serializableFirebaseUser: FirebaseCredProfile = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email || "",
+        };
+        dispatch(
+          authAction.restoreSession({
+            credProfile: serializableFirebaseUser,
+            userProfile: null,
+          })
+        );
+        dispatch(authAction.setInitialAuthCheckLoading(false));
+      } else {
+        dispatch(authAction.logoutUser());
+        dispatch(authAction.setInitialAuthCheckLoading(false));
+      }
     });
     return () => unsubscribe();
   }, [dispatch]);
@@ -32,11 +47,5 @@ export default function AuthRouter({ children }: { children: ReactNode }) {
     return <Spin spinning={true} fullscreen />;
   }
 
-  return isLoggedIn ? (
-    <>{children}</>
-  ) : loginPage ? (
-    <Login />
-  ) : (
-    <Register />
-  );
+  return isLoggedIn ? <>{children}</> : loginPage ? <Login /> : <Register />;
 }
