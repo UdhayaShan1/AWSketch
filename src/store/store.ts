@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const createSagaMiddleware = require("redux-saga").default;
+import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./rootSaga";
 import authReducer from "./auth/authSlice";
 
