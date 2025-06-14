@@ -12,7 +12,7 @@ import {
   signOut,
   type UserCredential,
 } from "firebase/auth";
-import { call, delay, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { auth } from "../../firebase/firebase";
 import { authAction } from "./authSlice";
 import {

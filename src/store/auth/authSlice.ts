@@ -5,8 +5,6 @@ import type {
   AuthRequest,
   UserProfile,
 } from "../types/auth.types";
-import { saveUserProfile } from "../../firebase/services/userService";
-import { act } from "react";
 
 const initialState: AWSUser = {
   credProfile: null,

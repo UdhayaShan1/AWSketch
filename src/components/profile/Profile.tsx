@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import type { UserProfile } from "../../store/types/auth.types";
 import { useAppDispatch, useAppSelector } from "../../store/rootTypes";
 import {
-  isLoadingAuth,
   retrieveloggedInUser,
 } from "../../store/auth/authSelector";
 import {
@@ -10,20 +9,18 @@ import {
   Form,
   Input,
   Modal,
-  notification,
   Select,
   Space,
   Typography,
 } from "antd";
 import { authAction } from "../../store/auth/authSlice";
 import { displayErrorNotification } from "../../helpers/helpers";
-import { ExclamationCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 
 export default function Profile() {
   const [form] = Form.useForm();
   const loggedInUser = useAppSelector(retrieveloggedInUser);
-  const isLoading = useAppSelector(isLoadingAuth);
   const loggedInUserProfile = loggedInUser.userProfile;
   const dispatch = useAppDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -32,7 +29,7 @@ export default function Profile() {
     if (loggedInUserProfile) {
       form.setFieldsValue(loggedInUserProfile);
     }
-  }, [loggedInUserProfile]);
+  }, [loggedInUserProfile, form]);
 
   const onFinish = (values: UserProfile) => {
     console.log(values);
