@@ -61,7 +61,7 @@ async function createDefaultProfile(uid: string, email: string) {
 
 export async function deleteUserProfile(uid: string) {
   try {
-    console.log("Deleting", uid);
+    console.info("Deleting user profile with UID:", uid);
     const docRef = doc(db, "UserProfile", uid);
     await deleteDoc(docRef);
     return true;
