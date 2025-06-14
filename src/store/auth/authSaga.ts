@@ -171,7 +171,7 @@ export function* saveUserProfileWorker(action: PayloadAction<UserProfile>) {
     const errMsg =
       error instanceof Error
         ? error.message
-        : "Error logging out. Try again later.";
+        : "Error saving profile. Try again later.";
     displayErrorNotification(errMsg);
     yield put(authAction.saveUserProfileFail(errMsg));
   }
