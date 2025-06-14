@@ -1,5 +1,13 @@
 import { getCurrentDateString } from "../../helpers/date_helper";
 
+export interface ProjectState {
+  isLoading: boolean;
+  error: string;
+  projectList: ProjectList | null;
+  selectedProject: ProjectUserInput | null;
+  activeTab: string;
+}
+
 export interface ProjectUserInput {
   id?: string;
   name: string;

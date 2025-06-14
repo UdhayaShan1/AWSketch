@@ -5,12 +5,25 @@ import {
   type ProjectUserInput,
 } from "../../store/types/projects.types";
 import { getCurrentDateString } from "../../helpers/date_helper";
+import { useAppDispatch, useAppSelector } from "../../store/rootTypes";
+import { projectsAction } from "../../store/projects/projectsSlice";
+import { useEffect } from "react";
+import { projectsErrorSelector } from "../../store/projects/projectsSelector";
 
 export default function CreateProject() {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
+  const errorMsg = useAppSelector(projectsErrorSelector);
+
+  useEffect(() => console.log("Mounted"), []);
+
   const onFinish = (values: ProjectUserInput) => {
     values.createdOn = getCurrentDateString();
-    console.log(values);
+    console.log("Values", values);
+    dispatch(projectsAction.addProject(values));
+    if (!errorMsg) {
+      form.resetFields();
+    }
   };
   return (
     <>
@@ -42,9 +55,9 @@ export default function CreateProject() {
           ]}
         >
           <Select>
-            <Select value={"development"}>Development</Select>
-            <Select value={"staging"}>Staging</Select>
-            <Select value={"production"}>Production</Select>
+            <Select.Option value="development">Development</Select.Option>
+            <Select.Option value="staging">Staging</Select.Option>
+            <Select.Option value="production">Production</Select.Option>
           </Select>
         </Form.Item>
 
