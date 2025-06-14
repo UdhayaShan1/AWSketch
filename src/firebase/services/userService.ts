@@ -28,6 +28,8 @@ export async function saveUserProfile(userProfileToSave: UserProfile) {
       uid: userProfileToSave.uid,
       email: userProfileToSave.email,
       name: userProfileToSave.name,
+      country: userProfileToSave.country,
+      userCategory: userProfileToSave.userCategory,
       lastUpdated: getCurrentDateString(),
       projects: userProfileToSave.projects || [],
     });
@@ -43,6 +45,8 @@ async function createDefaultProfile(uid: string, email: string) {
     uid: uid,
     email: email,
     name: "John Doe",
+    country: "",
+    userCategory: "",
     lastUpdated: getCurrentDateString(),
     projects: [],
   };
@@ -57,6 +61,7 @@ async function createDefaultProfile(uid: string, email: string) {
 
 export async function deleteUserProfile(uid: string) {
   try {
+    console.info("Deleting user profile with UID:", uid);
     const docRef = doc(db, "UserProfile", uid);
     await deleteDoc(docRef);
     return true;

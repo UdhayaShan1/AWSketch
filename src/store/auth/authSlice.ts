@@ -3,6 +3,7 @@ import type {
   AWSUser,
   AuthResponseProfile,
   AuthRequest,
+  UserProfile,
 } from "../types/auth.types";
 
 const initialState: AWSUser = {
@@ -92,6 +93,30 @@ export const authSlice = createSlice({
     },
     setInitialAuthCheckLoading(state, action: PayloadAction<boolean>) {
       state.initialAuthCheckLoading = action.payload;
+    },
+    saveUserProfile(state, _action: PayloadAction<UserProfile>) {
+      state.isLoading = true;
+    },
+    saveUserProfileSuccess(state, action: PayloadAction<UserProfile>) {
+      state.isLoading = false;
+      state.userProfile = action.payload;
+    },
+    saveUserProfileFail(state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    deleteUserProfile(state, _action: PayloadAction<string>) {
+      state.isLoading = true;
+    },
+    deleteUserProfileSuccess(state) {
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.credProfile = null;
+      state.userProfile = null;
+    },
+    deleteUserProfileFail(state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });

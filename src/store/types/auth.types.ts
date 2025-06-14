@@ -7,6 +7,8 @@ export interface UserProfile {
   uid: string;
   name: string;
   email: string;
+  country: string;
+  userCategory: string;
   lastUpdated: string;
   projects: string[];
 }

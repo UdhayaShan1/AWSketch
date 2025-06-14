@@ -43,14 +43,18 @@ export default function Header() {
                 key: "/projects",
                 label: <Link to="/projects">Projects</Link>,
               },
+              {
+                key: "/profile",
+                label: <Link to="/profile">Profile</Link>,
+              },
             ]}
-            style={{ flexGrow: 1 }} 
+            style={{ flexGrow: 1 }}
           ></Menu>
 
           {isLoggedIn && (
             <Button
               onClick={() => dispatch(authAction.logoutUser())}
-              style={{ marginLeft: "auto" }} 
+              style={{ marginLeft: "auto" }}
             >
               Logout
             </Button>

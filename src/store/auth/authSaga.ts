@@ -7,6 +7,7 @@ import type {
 } from "../types/auth.types";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   signInWithEmailAndPassword,
   signOut,
   type UserCredential,
@@ -14,7 +15,11 @@ import {
 import { call, put, takeEvery } from "redux-saga/effects";
 import { auth } from "../../firebase/firebase";
 import { authAction } from "./authSlice";
-import { getUserProfile } from "../../firebase/services/userService";
+import {
+  deleteUserProfile,
+  getUserProfile,
+  saveUserProfile,
+} from "../../firebase/services/userService";
 import { displayErrorNotification } from "../../helpers/helpers";
 
 export function* loginUserWorker(
@@ -157,9 +162,56 @@ export function* restoreSessionWorker(
   }
 }
 
+export function* saveUserProfileWorker(action: PayloadAction<UserProfile>) {
+  try {
+    const newUserProfile: UserProfile = action.payload;
+    yield call(saveUserProfile, newUserProfile);
+    yield put(authAction.saveUserProfileSuccess(newUserProfile));
+  } catch (error) {
+    const errMsg =
+      error instanceof Error
+        ? error.message
+        : "Error saving profile. Try again later.";
+    displayErrorNotification(errMsg);
+    yield put(authAction.saveUserProfileFail(errMsg));
+  }
+}
+
+export function* deleteUserProfileWorker(action: PayloadAction<string>) {
+  try {
+    const uid = action.payload;
+    if (!uid) {
+      throw new Error("Error retrieving userId try again later!");
+    }
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error("No authenticated user found");
+    }
+
+    const deleteResult: boolean = yield call(deleteUserProfile, uid);
+    if (!deleteResult) {
+      throw new Error("Failed to delete user profile from database");
+    }
+
+    yield call(deleteUser, currentUser);
+
+    yield put(authAction.deleteUserProfileSuccess());
+  } catch (error) {
+    const errMsg =
+      error instanceof Error
+        ? error.message
+        : "Error deleting profile. Try again later.";
+    displayErrorNotification(errMsg);
+    yield put(authAction.deleteUserProfileFail(errMsg));
+  }
+}
+
 export function* authWatcher() {
   yield takeEvery(authAction.loginUser, loginUserWorker);
   yield takeEvery(authAction.registerUser, registerUserWorker);
   yield takeEvery(authAction.logoutUser, logoutWorker);
   yield takeEvery(authAction.restoreSession, restoreSessionWorker);
+  yield takeEvery(authAction.saveUserProfile, saveUserProfileWorker);
+  yield takeEvery(authAction.deleteUserProfile, deleteUserProfileWorker);
 }

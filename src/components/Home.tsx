@@ -12,5 +12,5 @@ export default function Home() {
       "LOL"
     );
   }, [currentUser]);
-  return <h1>Home Page</h1>;
+  return <h1>Home Page Welcome {currentUser.credProfile?.email}</h1>;
 }
