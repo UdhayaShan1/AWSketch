@@ -1,3 +1,73 @@
+import { Button, Form, Input, Select } from "antd";
+import Title from "antd/es/typography/Title";
+import {
+  AWS_REGIONS,
+  type ProjectUserInput,
+} from "../../store/types/projects.types";
+import { getCurrentDateString } from "../../helpers/date_helper";
+
 export default function CreateProject() {
-    return <h1>Create Project</h1>
+  const [form] = Form.useForm();
+  const onFinish = (values: ProjectUserInput) => {
+    values.createdOn = getCurrentDateString();
+    console.log(values);
+  };
+  return (
+    <>
+      <Title level={2}>Create Projects Here</Title>
+      <Form form={form} onFinish={onFinish}>
+        <Form.Item
+          label="Project Name"
+          name="name"
+          rules={[{ required: true, message: "Please input a project name" }]}
+        >
+          <Input placeholder="Enter project name" />
+        </Form.Item>
+
+        <Form.Item
+          label="Project Description"
+          name="description"
+          rules={[
+            { required: true, message: "Please input project description." },
+          ]}
+        >
+          <Input placeholder="Enter project description" />
+        </Form.Item>
+
+        <Form.Item
+          label="Environment"
+          name="environment"
+          rules={[
+            { required: true, message: "Please select project environment" },
+          ]}
+        >
+          <Select>
+            <Select value={"development"}>Development</Select>
+            <Select value={"staging"}>Staging</Select>
+            <Select value={"production"}>Production</Select>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="Region Preference"
+          name="regionPreference"
+          rules={[
+            { required: false, message: "Please input region preference." },
+          ]}
+        >
+          <Select>
+            {AWS_REGIONS.map((item) => (
+              <Select key={item}>{item}</Select>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Save Changes
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
+  );
 }

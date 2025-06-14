@@ -10,7 +10,6 @@ export interface UserProfile {
   country: string;
   userCategory: string;
   lastUpdated: string;
-  projects: string[];
 }
 
 export interface AuthResponseProfile {
