@@ -79,6 +79,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.credProfile = actions.payload.credProfile;
       state.userProfile = actions.payload.userProfile;
+      state.initialAuthCheckLoading = false;
       state.isLoggedIn = true;
     },
     restoreSessionFailure(state, actions: PayloadAction<string>) {
@@ -87,6 +88,7 @@ export const authSlice = createSlice({
       state.isLoggedIn = false;
       state.credProfile = null;
       state.userProfile = null;
+      state.initialAuthCheckLoading = false;
     },
     setInitialAuthCheckLoading(state, action: PayloadAction<boolean>) {
       state.initialAuthCheckLoading = action.payload;

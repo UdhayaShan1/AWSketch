@@ -34,7 +34,6 @@ export default function AuthRouter({ children }: { children: ReactNode }) {
             userProfile: null,
           })
         );
-        dispatch(authAction.setInitialAuthCheckLoading(false));
       } else {
         dispatch(authAction.logoutUser());
         dispatch(authAction.setInitialAuthCheckLoading(false));

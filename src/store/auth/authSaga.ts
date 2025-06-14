@@ -124,7 +124,6 @@ export function* restoreSessionWorker(
 ) {
   try {
     const firebaseCred = action.payload.credProfile;
-    console.log("in saga", firebaseCred);
 
     if (!firebaseCred) {
       throw new Error("Firebase Credential is null");
@@ -141,7 +140,6 @@ export function* restoreSessionWorker(
       yield put(authAction.loginUserFail(errorMsg));
       return;
     }
-    console.log("Success", firebaseCred, userProfileFromDb);
 
     yield put(
       authAction.restoreSessionSuccess({
