@@ -31,7 +31,6 @@ export async function saveUserProfile(userProfileToSave: UserProfile) {
       country: userProfileToSave.country,
       userCategory: userProfileToSave.userCategory,
       lastUpdated: getCurrentDateString(),
-      projects: userProfileToSave.projects || [],
     });
     return true;
   } catch {
@@ -48,7 +47,6 @@ async function createDefaultProfile(uid: string, email: string) {
     country: "",
     userCategory: "",
     lastUpdated: getCurrentDateString(),
-    projects: [],
   };
   try {
     await saveUserProfile(defaultProfile);

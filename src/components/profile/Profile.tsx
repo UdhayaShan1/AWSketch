@@ -35,7 +35,6 @@ export default function Profile() {
     console.log(values);
     if (loggedInUserProfile) {
       values["uid"] = loggedInUserProfile?.uid;
-      values["projects"] = loggedInUserProfile.projects;
       dispatch(authAction.saveUserProfile(values));
     } else {
       displayErrorNotification(
@@ -46,7 +45,7 @@ export default function Profile() {
 
   return (
     <>
-      <Title level={3}>Profile Page</Title>
+      <Title level={2}>Profile Page</Title>
       <Form form={form} name="profile" onFinish={onFinish} layout="vertical">
         <Form.Item label="Email" name="email">
           <Input disabled placeholder="Email address" />

@@ -6,3 +6,10 @@ export function displayErrorNotification(errorMsg: string) {
         placement: 'top'
     });
 }
+
+export function displaySuccessNotification(successMsg: string) {
+    notification['success']({
+        message: successMsg,
+        placement: 'top'
+    });
+}
