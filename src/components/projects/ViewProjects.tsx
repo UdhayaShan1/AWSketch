@@ -38,9 +38,7 @@ export default function ViewProjects() {
     useState<ProjectUserInput | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(projectsAction.getProjectList());
-  }, []);
+
   useEffect(() => {
     const projectUserInputList: ProjectUserInput[] = [];
     for (const key in projectsList) {

@@ -77,6 +77,23 @@ export const projectsSlice = createSlice({
       state.isLoading = false;
       state.error = actions.payload;
     },
+    saveProjectDiagram: (state, actions: PayloadAction<ProjectUserInput>) => {
+      state.isLoading = true;
+    },
+    saveProjectDiagramSuccess: (
+      state,
+      actions: PayloadAction<ProjectUserInput>
+    ) => {
+      state.isLoading = false;
+      const updatedProject: ProjectUserInput = actions.payload;
+      if (state.projectList && updatedProject.id) {
+        state.projectList[updatedProject.id] = updatedProject;
+      }
+    },
+    saveProjectDiagramFail: (state, actions: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = actions.payload;
+    },
   },
 });
 
