@@ -10,6 +10,7 @@ import type {
   ProjectState,
   ProjectUserInput,
 } from "../types/projects.types";
+import type { deleteProject } from "../../firebase/services/projectService";
 
 const initialState: ProjectState = {
   isLoading: false,
@@ -26,6 +27,17 @@ export const projectsSlice = createSlice({
     setActiveTab: (state, actions: PayloadAction<string>) => {
       state.activeTab = actions.payload;
     },
+    getProjectList: (state) => {
+      state.isLoading = true;
+    },
+    getProjectListSuccess: (state, actions: PayloadAction<ProjectList>) => {
+      state.isLoading = false;
+      state.projectList = actions.payload;
+    },
+    getProjectListFail: (state, actions: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = actions.payload;
+    },
     addProject: (state, actions: PayloadAction<ProjectUserInput>) => {
       console.log("Called", actions.payload);
       state.isLoading = true;
@@ -36,6 +48,32 @@ export const projectsSlice = createSlice({
       state.activeTab = "view";
     },
     addProjectFail: (state, actions: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = actions.payload;
+    },
+    updateProject: (state, actions: PayloadAction<ProjectUserInput>) => {
+      console.log("Called", actions.payload);
+      state.isLoading = true;
+    },
+    updateProjectSuccess: (state, actions: PayloadAction<ProjectList>) => {
+      state.isLoading = false;
+      state.projectList = actions.payload;
+      state.activeTab = "view";
+    },
+    updateProjectFail: (state, actions: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = actions.payload;
+    },
+    deleteProject: (state, actions: PayloadAction<ProjectUserInput>) => {
+      console.log("Called", actions.payload);
+      state.isLoading = true;
+    },
+    deleteProjectSuccess: (state, actions: PayloadAction<ProjectList>) => {
+      state.isLoading = false;
+      state.projectList = actions.payload;
+      state.activeTab = "view";
+    },
+    deleteProjectFail: (state, actions: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = actions.payload;
     },

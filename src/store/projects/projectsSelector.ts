@@ -8,3 +8,7 @@ export const projectsErrorSelector = (state: RootState) => {
 export const projectsActiveTabSelector = (state: RootState) => {
   return state.projects.activeTab;
 };
+
+export const projectsListSelector = (state: RootState) => {
+  return state.projects.projectList;
+};
