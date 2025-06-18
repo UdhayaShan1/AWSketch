@@ -20,12 +20,22 @@ const Palette: React.FC<PaletteProps> = ({ services }) => {
     event.dataTransfer.effectAllowed = "move";
   };
 
-  // Group services by category for better organization
+  // Updated service categories with all new AWS services
   const serviceCategories = {
-    compute: ["ec2", "lambda"],
-    storage: ["s3", "s4"],
-    database: ["rds"],
-    networking: ["vpc", "api-gateway"],
+    compute: ["ec2", "lambda", "ecs", "eks", "fargate", "batch"],
+    storage: ["s3", "ebs", "efs", "fsx"],
+    database: ["rds", "dynamodb", "elasticache", "redshift", "aurora"],
+    networking: ["vpc", "alb", "nlb", "cloudfront", "route53", "nat-gateway"],
+    apiIntegration: [
+      "api-gateway",
+      "sns",
+      "sqs",
+      "eventbridge",
+      "step-functions",
+    ],
+    security: ["iam", "cognito", "secrets-manager", "waf"],
+    monitoring: ["cloudwatch", "kinesis", "elasticsearch"],
+    devTools: ["codecommit", "codebuild", "codepipeline"],
   };
 
   const getCategoryServices = (categoryIds: string[]) => {
@@ -69,81 +79,122 @@ const Palette: React.FC<PaletteProps> = ({ services }) => {
     </div>
   );
 
+  const CategorySection: React.FC<{
+    title: string;
+    color: string;
+    serviceIds: string[];
+    description?: string;
+  }> = ({ title, color, serviceIds, description }) => {
+    const categoryServices = getCategoryServices(serviceIds);
+
+    if (categoryServices.length === 0) return null;
+
+    return (
+      <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "8px" }}>
+          <Text
+            strong
+            style={{
+              color,
+              fontSize: "13px",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {title}
+          </Text>
+          {description && (
+            <Text
+              type="secondary"
+              style={{
+                fontSize: "11px",
+                display: "block",
+                marginTop: "2px",
+                fontStyle: "italic",
+              }}
+            >
+              {description}
+            </Text>
+          )}
+        </div>
+        {categoryServices.map((service) => (
+          <ServiceItem key={service.id} service={service} />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div>
       <div style={{ marginBottom: "16px" }}>
         <Text type="secondary" style={{ fontSize: "12px" }}>
-          Drag services to the canvas to build your architecture
+          Drag AWS services to the canvas to build your architecture
         </Text>
       </div>
 
       {/* Compute Services */}
-      <div style={{ marginBottom: "20px" }}>
-        <Text
-          strong
-          style={{
-            color: "#1890ff",
-            fontSize: "13px",
-            textTransform: "uppercase",
-          }}
-        >
-          Compute
-        </Text>
-        {getCategoryServices(serviceCategories.compute).map((service) => (
-          <ServiceItem key={service.id} service={service} />
-        ))}
-      </div>
+      <CategorySection
+        title="Compute"
+        color="#1890ff"
+        serviceIds={serviceCategories.compute}
+        description="Processing power and execution environments"
+      />
 
       {/* Storage Services */}
-      <div style={{ marginBottom: "20px" }}>
-        <Text
-          strong
-          style={{
-            color: "#52c41a",
-            fontSize: "13px",
-            textTransform: "uppercase",
-          }}
-        >
-          Storage
-        </Text>
-        {getCategoryServices(serviceCategories.storage).map((service) => (
-          <ServiceItem key={service.id} service={service} />
-        ))}
-      </div>
+      <CategorySection
+        title="Storage"
+        color="#52c41a"
+        serviceIds={serviceCategories.storage}
+        description="Data storage and file systems"
+      />
 
       {/* Database Services */}
-      <div style={{ marginBottom: "20px" }}>
-        <Text
-          strong
-          style={{
-            color: "#faad14",
-            fontSize: "13px",
-            textTransform: "uppercase",
-          }}
-        >
-          Database
-        </Text>
-        {getCategoryServices(serviceCategories.database).map((service) => (
-          <ServiceItem key={service.id} service={service} />
-        ))}
-      </div>
+      <CategorySection
+        title="Database"
+        color="#faad14"
+        serviceIds={serviceCategories.database}
+        description="Managed database and data warehousing"
+      />
 
       {/* Networking Services */}
-      <div style={{ marginBottom: "20px" }}>
-        <Text
-          strong
-          style={{
-            color: "#722ed1",
-            fontSize: "13px",
-            textTransform: "uppercase",
-          }}
-        >
-          Networking
-        </Text>
-        {getCategoryServices(serviceCategories.networking).map((service) => (
-          <ServiceItem key={service.id} service={service} />
-        ))}
-      </div>
+      <CategorySection
+        title="Networking"
+        color="#722ed1"
+        serviceIds={serviceCategories.networking}
+        description="Network infrastructure and content delivery"
+      />
+
+      {/* API & Integration Services */}
+      <CategorySection
+        title="API & Integration"
+        color="#eb2f96"
+        serviceIds={serviceCategories.apiIntegration}
+        description="Application integration and messaging"
+      />
+
+      {/* Security & Identity Services */}
+      <CategorySection
+        title="Security & Identity"
+        color="#f5222d"
+        serviceIds={serviceCategories.security}
+        description="Authentication, authorization, and security"
+      />
+
+      {/* Monitoring & Analytics Services */}
+      <CategorySection
+        title="Monitoring & Analytics"
+        color="#13c2c2"
+        serviceIds={serviceCategories.monitoring}
+        description="Observability and data analytics"
+      />
+
+      {/* Developer Tools */}
+      <CategorySection
+        title="Developer Tools"
+        color="#fa8c16"
+        serviceIds={serviceCategories.devTools}
+        description="CI/CD and development workflow"
+      />
     </div>
   );
 };
