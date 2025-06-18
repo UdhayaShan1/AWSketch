@@ -27,7 +27,7 @@ Introducing AWSketch, a LLM-powered web application that allows developers, arch
 
 ### 🎨 Diagram
 
-- Edit and create a diagram for your project
+- Edit and create a diagram for your project with drag and drop functions.
 
 ![alt text](https://github.com/UdhayaShan1/AWSketch/blob/master/src/assets/screenshots/diagram_example.png)
 
