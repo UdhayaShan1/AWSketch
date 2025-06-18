@@ -17,11 +17,11 @@ Introducing AWSketch, a LLM-powered web application that allows developers, arch
 ### 📊 Project Management
 - Create Project
 
-![alt text](src\assets\screenshots\create_project.png)
+![alt text](https://github.com/UdhayaShan1/AWSketch/blob/master/src/assets/screenshots/create_project.png)
 
 - View Projects
 
-![alt text](src\assets\screenshots\view_projects.png)
+![alt text](https://github.com/UdhayaShan1/AWSketch/blob/master/src/assets/screenshots/view_projects.png)
 
 - Edit and Delete
 
@@ -29,7 +29,7 @@ Introducing AWSketch, a LLM-powered web application that allows developers, arch
 
 - Edit and create a diagram for your project
 
-![alt text](src\assets\screenshots\diagram_example.png)
+![alt text](https://github.com/UdhayaShan1/AWSketch/blob/master/src/assets/screenshots/diagram_example.png)
 
 - Import and Export to JSON to share diagrams
 
