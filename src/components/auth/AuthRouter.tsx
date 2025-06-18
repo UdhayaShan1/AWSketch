@@ -12,6 +12,7 @@ import Register from "./Register";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { authAction } from "../../store/auth/authSlice";
 import type { FirebaseCredProfile } from "../../store/types/auth.types";
+import { projectsAction } from "../../store/projects/projectsSlice";
 
 export default function AuthRouter({ children }: { children: ReactNode }) {
   const isLoggedIn = useAppSelector(isloggedInUser);
@@ -28,12 +29,14 @@ export default function AuthRouter({ children }: { children: ReactNode }) {
           uid: firebaseUser.uid,
           email: firebaseUser.email || "",
         };
+        
         dispatch(
           authAction.restoreSession({
             credProfile: serializableFirebaseUser,
             userProfile: null,
           })
         );
+        dispatch(projectsAction.getProjectList());
       } else {
         dispatch(authAction.logoutUser());
         dispatch(authAction.setInitialAuthCheckLoading(false));

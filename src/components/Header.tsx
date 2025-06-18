@@ -47,6 +47,10 @@ export default function Header() {
                 key: "/profile",
                 label: <Link to="/profile">Profile</Link>,
               },
+              {
+                key: "/diagrams",
+                label: <Link to="/diagrams">Diagrams</Link>,
+              },
             ]}
             style={{ flexGrow: 1 }}
           ></Menu>

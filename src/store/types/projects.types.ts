@@ -1,4 +1,5 @@
 import { getCurrentDateString } from "../../helpers/date_helper";
+import type { AwsEdge, AwsNode } from "./aws.types";
 
 export interface ProjectState {
   isLoading: boolean;
@@ -14,8 +15,21 @@ export interface ProjectUserInput {
   description: string;
   environment: string;
   regionPreference?: string;
+  diagramData?: Diagram;
   createdOn?: string;
   updatedOn?: string;
+}
+
+export interface Diagram {
+  nodes: AwsNode[];
+  edges: AwsEdge[];
+  viewport: {};
+  lastModified: string;
+}
+
+export interface ProjectDiagramSaveRequest {
+  projectId: string;
+  diagram: Diagram;
 }
 
 export interface ProjectList {

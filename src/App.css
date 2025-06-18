@@ -40,3 +40,99 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Simplified ReactFlow styling */
+.react-flow__edge {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  stroke: #1890ff;
+  stroke-width: 2px;
+}
+
+.react-flow__edge:hover {
+  filter: drop-shadow(0 0 6px rgba(24, 144, 255, 0.4));
+  stroke-width: 3px;
+}
+
+.react-flow__edge.selected {
+  stroke: #ff4d4f !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 8px rgba(255, 77, 79, 0.6));
+  animation: pulse-edge 1.5s ease-in-out infinite;
+}
+
+.react-flow__edge.animated {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+/* Edge selection animation */
+@keyframes pulse-edge {
+  0%,
+  100% {
+    stroke-width: 3px;
+    opacity: 1;
+  }
+  50% {
+    stroke-width: 4px;
+    opacity: 0.8;
+  }
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Node selection styles */
+.react-flow__node.selected {
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.3) !important;
+}
+
+/* Selection box styling */
+.react-flow__selection {
+  background: rgba(24, 144, 255, 0.1);
+  border: 2px dashed #1890ff;
+}
+
+/* Controls styling */
+.react-flow__controls {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  border-bottom: 1px solid #e8e8e8;
+  transition: all 0.2s;
+}
+
+.react-flow__controls-button:hover {
+  background: #f0f7ff;
+  color: #1890ff;
+}
+
+/* Arrow markers */
+.react-flow__arrowhead {
+  fill: currentColor;
+}
+
+/* Keyboard shortcuts hint */
+kbd {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+  color: #333;
+  display: inline-block;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0 0.1em;
+  padding: 0.1em 0.6em;
+  text-shadow: 0 1px 0 #fff;
+}

@@ -1,5 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ProjectList, ProjectUserInput } from "../types/projects.types";
+import type {
+  ProjectDiagramSaveRequest,
+  ProjectList,
+  ProjectUserInput,
+} from "../types/projects.types";
 import { act } from "react";
 import { auth } from "../../firebase/firebase";
 import {
@@ -121,9 +125,36 @@ export function* deleteProjectWorker(action: PayloadAction<ProjectUserInput>) {
   }
 }
 
+export function* saveProjectDiagramWorker(
+  action: PayloadAction<ProjectUserInput>
+) {
+  console.log("Saving proj diagram", action.payload);
+  const updatedProject = action.payload;
+  try {
+    const uid = auth.currentUser?.uid;
+    if (!uid) {
+      throw new Error("Uid not found");
+    }
+    const saveResult: boolean = yield call(updateProject, uid, updatedProject);
+    if (!saveResult) {
+      throw new Error("Error updating project in service");
+    }
+    displaySuccessNotification("Saved diagram to project");
+    yield put(projectsAction.saveProjectDiagramSuccess(updatedProject));
+  } catch (error) {
+    const errMsg =
+      error instanceof Error
+        ? error.message
+        : `Error saving project diagram ${updatedProject.name} in Saga`;
+    displayErrorNotification(errMsg);
+    yield put(projectsAction.saveProjectDiagramFail(errMsg));
+  }
+}
+
 export function* projectsWatcher() {
   yield takeEvery(projectsAction.addProject, addProjectWorker);
   yield takeEvery(projectsAction.getProjectList, getProjectListWorker);
   yield takeEvery(projectsAction.updateProject, updateProjectWorker);
   yield takeEvery(projectsAction.deleteProject, deleteProjectWorker);
+  yield takeEvery(projectsAction.saveProjectDiagram, saveProjectDiagramWorker);
 }

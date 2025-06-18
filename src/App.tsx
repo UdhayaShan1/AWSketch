@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import Projects from "./components/projects/Projects";
 import "./App.css";
 import Profile from "./components/profile/Profile";
+import Diagrams from "./components/diagrams/Diagrams";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/profile" element={<Profile />}></Route>
+                <Route path="/diagrams" element={<Diagrams />}></Route>
               </Routes>
             </div>
           </Content>
